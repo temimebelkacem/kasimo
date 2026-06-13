@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="description" content="كاسيمو (KASIMO) - مصمم هويات بصرية فخمة ومطور مواقع ويب سريعة وحديثة للشركات والرواد.">
+    <meta name="keywords" content="تصميم مواقع, هوية بصرية, شعار, تصميم ويب, مبرمج, مصمم, KASIMO">
+    <meta name="author" content="تميم بلقاسم">
+    <meta property="og:title" content="KASIMO | مصمم هويات بصرية ومطور ويب">
+    <meta property="og:description" content="أقوم بمساعدة الشركات والرواد على بناء بصمتهم الفريدة من خلال تصميم هويات بصرية وتطوير مواقع ويب سريعة.">
+    <meta property="og:image" content="logo.jpg">
+    <meta property="og:type" content="website">
+    
+    <title>KASIMO | مصمم هويات بصرية ومطور ويب</title>
+    
+    <link rel="icon" type="image/png" href="favicon.png">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- المتغيرات العامة --- */
+        :root {
+            --bg-color: #0b0c10;       
+            --card-bg: rgba(31, 32, 35, 0.65);        
+            --primary-color: #dfb141;   
+            --secondary-color: #b58d22; 
+            --text-color: #f8fafc;      
+            --text-muted: #a1a1aa;     
+            --transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            --header-bg: rgba(11, 12, 16, 0.85);
+            --footer-bg: #050608;
+            --input-bg: #0b0c10;
+            --glow-shadow: 0 0 20px rgba(223, 177, 65, 0.35);
+            --modal-bg: #0b0c10;
+            --modal-text: #f8fafc;
+            --modal-text-muted: #a1a1aa;
+            --popular-card-bg: rgba(36, 37, 41, 0.8);
+            --popular-card-text: #f8fafc;
+            --popular-card-muted: #a1a1aa;
+        }
+
+        /* --- متغيرات الوضع الفاتح --- */
+        [data-theme="light"] {
+            --bg-color: #f4f5f7;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --text-color: #1f2023;
+            --text-muted: #515f72;
+            --header-bg: rgba(244, 245, 247, 0.85);
+            --footer-bg: #e2e8f0;
+            --input-bg: #ffffff;
+            --glow-shadow: 0 4px 20px rgba(181, 141, 34, 0.15);
+            --modal-bg: #ffffff;
+            --modal-text: #1f2023;
+            --modal-text-muted: #515f72;
+            --popular-card-bg: #ffffff;
+            --popular-card-text: #1f2023;
+            --popular-card-muted: #515f72;
+        }
+
+        /* --- التنسيقات الأساسية --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-color);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary-color);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            position: relative;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* --- شاشة التحميل الاحترافية (Cinematic Preloader) --- */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #060709;
+            z-index: 99999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1), transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        
+        .loader-wrapper {
+            text-align: center;
+            width: 280px;
+            animation: loaderFadeIn 1s ease-out;
+        }
+
+        .loader-logo-container {
+            margin-bottom: 25px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .loader-logo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 0 30px rgba(223, 177, 65, 0.2);
+            animation: pulseGlow 2.5s infinite ease-in-out;
+        }
+
+        .loader-bar-bg {
+            width: 100%;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .loader-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+            box-shadow: 0 0 8px var(--primary-color);
+            transition: width 0.1s linear;
+        }
+
+        .loader-text-brand {
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: 3px;
+            color: #ffffff;
+            text-shadow: 0 0 15px rgba(255,255,255,0.1);
+            margin-bottom: 5px;
+        }
+
+        .loader-progress-num {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary-color);
+            letter-spacing: 1px;
+            opacity: 0.8;
+        }
+
+        @keyframes loaderFadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 25px rgba(223, 177, 65, 0.2); }
+            50% { transform: scale(1.03); box-shadow: 0 0 45px rgba(223, 177, 65, 0.45); }
+        }
+
+        /* --- القائمة العلوية --- */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: var(--header-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            z-index: 1000;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid rgba(223, 177, 65, 0.12);
+            transition: background-color 0.4s ease;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-area { display: flex; align-items: center; gap: 12px; }
+
+        .logo-img {
+            width: 45px; height: 45px; border-radius: 50%; object-fit: cover;
+            border: 2px solid var(--primary-color); background-color: #dfb141; box-shadow: var(--glow-shadow);
+        }
+
+        .logo-text {
+            font-size: 22px; font-weight: 700;
+            background: linear-gradient(45deg, var(--primary-color), var(--text-color));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .nav-controls-wrapper { display: flex; align-items: center; gap: 20px; }
+        .nav-links { display: flex; list-style: none; gap: 30px; }
+        .nav-links a { color: var(--text-color); text-decoration: none; font-weight: 600; transition: var(--transition); position: relative; }
+        .nav-links a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; right: 0; background-color: var(--primary-color); transition: var(--transition); }
+        html[dir="rtl"] .nav-links a::after { right: 0; left: auto; }
+        html[dir="ltr"] .nav-links a::after { left: 0; right: auto; }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-links a:hover { color: var(--primary-color); text-shadow: 0 0 8px rgba(223, 177, 65, 0.4); }
+
+        .theme-toggle-btn, .lang-toggle-btn {
+            background: var(--card-bg); border: 1px solid rgba(223, 177, 65, 0.25); color: var(--primary-color);
+            padding: 8px 14px; border-radius: 20px; cursor: pointer; font-weight: 700; font-size: 14px;
+            display: flex; align-items: center; gap: 6px; transition: var(--transition);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); backdrop-filter: blur(5px);
+        }
+        .theme-toggle-btn:hover, .lang-toggle-btn:hover { background: linear-gradient(45deg, var(--primary-color), var(--secondary-color)); color: #0b0c10; transform: translateY(-2px); box-shadow: var(--glow-shadow); }
+        .menu-btn { display: none; font-size: 24px; cursor: pointer; color: var(--primary-color); }
+
+        /* --- التنسيق المشترك --- */
+        section { padding: 120px 20px 60px; max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; justify-content: center; position: relative; z-index: 2; }
+        .section-title { text-align: center; font-size: 36px; margin-bottom: 40px; position: relative; color: var(--text-color); }
+        .section-title::after { content: ''; display: block; width: 60px; height: 4px; background: linear-gradient(to right, var(--primary-color), var(--secondary-color)); margin: 10px auto 0; border-radius: 2px; }
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* --- من أنا --- */
+        #about { display: flex; flex-direction: row; align-items: center; gap: 60px; min-height: 80vh; padding-bottom: 20px; }
+        .about-content { flex: 1.2; }
+        .about-content h1 { font-size: 48px; margin-bottom: 20px; line-height: 1.4; color: var(--text-color); }
+        .about-content h1 span { color: var(--primary-color); background: linear-gradient(45deg, var(--primary-color), #ffe699); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .about-content p { color: var(--text-muted); font-size: 18px; line-height: 1.8; margin-bottom: 35px; }
+        .about-img { flex: 0.8; display: flex; justify-content: center; position: relative; }
+        .img-box { width: 300px; height: 300px; position: relative; display: flex; align-items: center; justify-content: center; }
+        .img-box::before { content: ''; position: absolute; width: 100%; height: 100%; border: 4px solid transparent; border-top-color: var(--primary-color); border-bottom-color: var(--secondary-color); border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; animation: morph 6s linear infinite; }
+        .main-logo-src { width: 85%; height: 85%; object-fit: cover; border-radius: 50%; border: 3px solid #1f2023; z-index: 2; background-color: #dfb141; box-shadow: var(--glow-shadow); }
+
+        @keyframes morph { 0% { transform: rotate(0deg) border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; } 50% { border-radius: 50% 50% 50% 50%; } 100% { transform: rotate(360deg) border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; } }
+
+        .btn { display: inline-block; padding: 12px 35px; background: linear-gradient(45deg, var(--primary-color), var(--secondary-color)); color: #0b0c10; text-decoration: none; border-radius: 30px; font-weight: 700; box-shadow: 0 4px 15px rgba(223, 177, 65, 0.2); transition: var(--transition); border: none; cursor: pointer; text-align: center; }
+        .btn:hover { transform: translateY(-4px); box-shadow: 0 12px 25px rgba(223, 177, 65, 0.45); color: #fff; }
+        .btn-outline { background: transparent; border: 2px solid var(--primary-color); color: var(--primary-color); margin-top: 15px; }
+        .btn-outline:hover { background: var(--primary-color); color: #0b0c10; }
+
+        /* --- لماذا تختارني --- */
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; margin-top: 20px; }
+        .feature-card { background: var(--card-bg); border: 1px solid rgba(223, 177, 65, 0.12); padding: 30px 20px; border-radius: 15px; text-align: center; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: var(--transition); }
+        .feature-card:hover { transform: translateY(-8px); border-color: var(--primary-color); box-shadow: var(--glow-shadow); }
+        .feature-card i { font-size: 35px; color: var(--primary-color); margin-bottom: 15px; transition: transform 0.4s ease; }
+        .feature-card:hover i { transform: scale(1.15) rotate(5deg); }
+        .feature-card h3 { font-size: 20px; margin-bottom: 10px; color: var(--text-color); }
+        .feature-card p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+
+        /* --- العدادات --- */
+        .stats-horizontal-section { max-width: 1200px; margin: 0 auto 60px; padding: 0 20px; width: 100%; position: relative; z-index: 5; }
+        .stats-grid-horizontal { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
+        .stat-card { background: var(--card-bg); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(223, 177, 65, 0.15); padding: 25px 20px; border-radius: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.15); transition: var(--transition); position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .stat-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); transform: scaleX(0); transition: var(--transition); }
+        .stat-card:hover::before { transform: scaleX(1); }
+        .stat-card:hover { transform: translateY(-7px); border-color: var(--primary-color); box-shadow: var(--glow-shadow); }
+        .stat-icon { font-size: 30px; color: var(--primary-color); margin-bottom: 10px; }
+        .stat-card h2 { font-size: 38px; font-weight: 700; color: var(--text-color); margin-bottom: 5px; }
+        .stat-card p { color: var(--text-muted); font-size: 15px; font-weight: 600; }
+
+        /* --- معرض الأعمال --- */
+        .portfolio-filters { display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; flex-wrap: wrap; }
+        .filter-btn { background-color: var(--card-bg); color: var(--text-color); border: 1px solid rgba(223, 177, 65, 0.2); padding: 8px 25px; border-radius: 25px; cursor: pointer; font-weight: 600; transition: var(--transition); backdrop-filter: blur(5px); }
+        .filter-btn.active, .filter-btn:hover { background: linear-gradient(45deg, var(--primary-color), var(--secondary-color)); color: #0b0c10; border-color: var(--primary-color); box-shadow: var(--glow-shadow); }
+        .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+        .portfolio-card { background-color: var(--card-bg); border-radius: 15px; overflow: hidden; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-shadow: 0 10px 25px rgba(0,0,0,0.15); transition: var(--transition); border: 1px solid rgba(223, 177, 65, 0.12); cursor: pointer; }
+        .portfolio-card.hide { display: none; }
+        .portfolio-card:hover { transform: translateY(-10px); border-color: var(--primary-color); box-shadow: var(--glow-shadow); }
+        
+        /* تحسينات لسرعة تحميل وعرض صور معرض الأعمال الفورية */
+        .card-img { 
+            height: 220px; 
+            background: #131418; /* لون خلفية ناعم يظهر كبديل فوري أثناء تحميل الصورة */
+            position: relative; 
+            overflow: hidden; 
+            border-bottom: 1px solid rgba(223, 177, 65, 0.12); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+        }
+        .card-img img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); 
+            opacity: 1; /* عرض فوري ومباشر دون تأخير حركي */
+        }
+        .portfolio-card:hover .card-img img { transform: scale(1.1) rotate(1deg); }
+        .card-info { padding: 20px; }
+        .card-info h3 { margin-bottom: 8px; font-size: 18px; color: var(--text-color); transition: color 0.3s; }
+        .portfolio-card:hover .card-info h3 { color: var(--primary-color); }
+        .card-info p { color: var(--text-muted); font-size: 13px; line-height: 1.6; }
+
+        /* --- النوافذ المنبثقة (Modals) --- */
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.85); z-index: 2000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; padding: 20px; backdrop-filter: blur(8px); }
+        .modal.open { opacity: 1; pointer-events: auto; }
+        .modal-content { background-color: var(--modal-bg); max-width: 600px; width: 100%; padding: 30px; border-radius: 15px; border: 1px solid var(--primary-color); position: relative; transform: translateY(-50px); transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1); text-align: center; box-shadow: var(--glow-shadow); }
+        .modal.open .modal-content { transform: translateY(0); }
+        .close-modal { position: absolute; top: 15px; left: 15px; font-size: 24px; color: var(--modal-text-muted); cursor: pointer; transition: var(--transition); }
+        .close-modal:hover { color: var(--primary-color); transform: rotate(90deg); }
+        .modal-icon { font-size: 60px; color: var(--primary-color); margin-bottom: 20px; }
+        .modal-title { font-size: 24px; margin-bottom: 15px; color: var(--modal-text); }
+        .modal-text { color: var(--modal-text-muted); line-height: 1.8; margin-bottom: 20px; }
+
+        /* --- قسم المراجعات --- */
+        .reviews-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-bottom: 30px; }
+        .review-card { background-color: var(--card-bg); padding: 30px; border-radius: 15px; position: relative; border-right: 4px solid var(--primary-color); box-shadow: 0 10px 25px rgba(0,0,0,0.15); backdrop-filter: blur(5px); animation: fadeIn 0.5s ease-in-out; border-top: 1px solid rgba(223, 177, 65, 0.08); border-bottom: 1px solid rgba(223, 177, 65, 0.08); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .client-info { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+        .client-avatar { width: 55px; height: 55px; border-radius: 50%; background-color: var(--bg-color); display: flex; align-items: center; justify-content: center; font-size: 22px; color: var(--primary-color); border: 1px solid rgba(223, 177, 65, 0.3); transition: background-color 0.4s ease; }
+        .client-details h4 { color: var(--text-color); }
+        .client-details span { color: var(--text-muted); }
+        .stars { color: var(--primary-color); margin-bottom: 15px; }
+        .review-text { color: var(--text-muted); font-size: 15px; line-height: 1.7; }
+        
+        .more-reviews-btn-wrapper { text-align: center; margin-bottom: 50px; }
+        .more-reviews-link { font-size: 18px; color: var(--primary-color); font-weight: 700; text-decoration: none; cursor: pointer; transition: var(--transition); border-bottom: 2px dashed var(--primary-color); padding-bottom: 4px; display: inline-block; }
+        .more-reviews-link:hover { color: var(--text-color); border-bottom-color: var(--text-color); text-shadow: 0 0 10px rgba(223, 177, 65, 0.6); }
+
+        /* --- تصميم لوحة المراجعات الجانبية المحدثة بملء الشاشة بالكامل (Full-Screen Drawer) --- */
+        .reviews-drawer {
+            position: fixed;
+            top: 0;
+            left: -100%; 
+            width: 100%; /* تأخذ ملء الشاشة بالكامل */
+            max-width: 100%; /* إلغاء التقييد بالعرض الصغير لتملأ الشاشة تماماً */
+            height: 100%;
+            background-color: var(--modal-bg);
+            z-index: 2500;
+            box-shadow: 0 0 40px rgba(0,0,0,0.6);
+            display: flex;
+            flex-direction: column;
+            transition: left 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        html[dir="rtl"] .reviews-drawer {
+            left: auto;
+            right: -100%;
+            transition: right 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .reviews-drawer.open { left: 0; }
+        html[dir="rtl"] .reviews-drawer.open { right: 0; left: auto; }
+        
+        .drawer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 2400;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+        .drawer-overlay.open { opacity: 1; pointer-events: auto; }
+        
+        .drawer-header {
+            padding: 25px 30px;
+            border-bottom: 1px solid rgba(223, 177, 65, 0.15);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(11, 12, 16, 0.4);
+        }
+        .drawer-header h3 {
+            font-size: 24px;
+            color: var(--modal-text);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .drawer-header h3 i { color: var(--primary-color); }
+        .close-drawer {
+            font-size: 32px;
+            color: var(--modal-text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .close-drawer:hover { color: var(--primary-color); transform: scale(1.15) rotate(90deg); }
+        
+        /* شبكة عرض كروت التقييمات داخل وضع ملء الشاشة */
+        .reviews-modal-grid {
+            flex: 1;
+            overflow-y: auto;
+            padding: 40px 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* تحويلها لشبكة متجاوبة بدلاً من عمود واحد للاستفادة من ملء الشاشة */
+            gap: 25px;
+            align-content: start;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        .reviews-modal-grid::-webkit-scrollbar { width: 6px; }
+        .reviews-modal-grid::-webkit-scrollbar-track { background: transparent; }
+        .reviews-modal-grid::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 10px; }
+        
+        .reviews-modal-grid .review-card {
+            background-color: var(--card-bg);
+            border-right: 4px solid var(--primary-color);
+            height: fit-content;
+        }
+        .reviews-modal-grid .client-details h4 { color: var(--modal-text); }
+        .reviews-modal-grid .client-details span { color: var(--modal-text-muted); }
+        .reviews-modal-grid .review-text { color: var(--modal-text-muted); }
+
+        .add-review-wrapper { background-color: var(--card-bg); padding: 35px; border-radius: 20px; max-width: 800px; margin: 0 auto; width: 100%; border: 1px dashed rgba(223, 177, 65, 0.3); backdrop-filter: blur(5px); }
+        .add-review-wrapper h3 { margin-bottom: 20px; text-align: center; color: var(--primary-color); }
+        .rating-select { display: flex; gap: 10px; justify-content: center; font-size: 24px; margin-bottom: 20px; cursor: pointer; color: var(--text-muted); }
+        .rating-select i.active { color: var(--primary-color); text-shadow: 0 0 10px rgba(223, 177, 65, 0.5); }
+
+        /* --- قسم الأسعار --- */
+        .pricing-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1000px; margin: 0 auto; width: 100%; }
+        .pricing-card { background-color: var(--card-bg); border: 1px solid rgba(223, 177, 65, 0.15); border-radius: 20px; padding: 40px 30px; text-align: center; position: relative; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-shadow: 0 10px 30px rgba(0,0,0,0.15); transition: var(--transition); display: flex; flex-direction: column; color: var(--text-color); }
+        .pricing-card:hover { transform: translateY(-12px); border-color: var(--primary-color); box-shadow: var(--glow-shadow); }
+        .pricing-card.popular { border: 2px solid var(--primary-color); transform: scale(1.05); background: var(--popular-card-bg); color: var(--popular-card-text); }
+        .pricing-card.popular h3 { color: var(--popular-card-text) !important; }
+        .pricing-card.popular .price h4 { color: var(--primary-color) !important; }
+        .pricing-card.popular .price .old-price { color: var(--popular-card-muted) !important; }
+        .pricing-card.popular .pricing-features li { color: var(--popular-card-muted) !important; }
+        .pricing-card.popular:hover { transform: scale(1.05) translateY(-12px); }
+        .pricing-card .badge { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: linear-gradient(45deg, var(--primary-color), var(--secondary-color)); color: #0b0c10; padding: 5px 20px; border-radius: 20px; font-weight: 700; font-size: 14px; box-shadow: 0 4px 10px rgba(223, 177, 65, 0.3); white-space: nowrap; }
+        .pricing-card h3 { color: var(--text-color); font-size: 22px; margin-bottom: 20px; }
+        .pricing-card .price { margin-bottom: 30px; }
+        .pricing-card .price span { color: var(--text-muted); font-size: 14px; display: block; margin-bottom: 5px; }
+        .pricing-card .price h4 { color: var(--primary-color); font-size: 48px; font-weight: 700; line-height: 1; display: inline-block; text-shadow: 0 0 15px rgba(223, 177, 65, 0.2); }
+        .pricing-card .price .old-price { display: inline-block; text-decoration: line-through; color: var(--text-muted); font-size: 20px; margin-left: 10px; margin-right: 10px; }
+        .pricing-features { list-style: none; margin-bottom: 30px; text-align: right; flex-grow: 1; }
+        html[dir="ltr"] .pricing-features { text-align: left; }
+        .pricing-features li { color: var(--text-muted); margin-bottom: 15px; font-size: 15px; display: flex; align-items: center; gap: 10px; }
+        .pricing-features li i { color: var(--primary-color); font-size: 14px; }
+        .pricing-card .btn { width: 100%; }
+
+        /* --- الأسئلة الشائعة --- */
+        .faq-container { max-width: 800px; margin: 0 auto; width: 100%; }
+        .faq-item { background-color: var(--card-bg); margin-bottom: 15px; border-radius: 10px; overflow: hidden; border: 1px solid rgba(223, 177, 65, 0.1); backdrop-filter: blur(5px); transition: var(--transition); }
+        .faq-item:hover { border-color: rgba(223, 177, 65, 0.4); }
+        .faq-question { padding: 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-weight: 600; transition: var(--transition); color: var(--text-color); }
+        .faq-question:hover { color: var(--primary-color); }
+        .faq-answer { max-height: 0; overflow: hidden; padding: 0 20px; color: var(--text-muted); line-height: 1.8; font-size: 15px; transition: max-height 0.4s cubic-bezier(0.25, 1, 0.5, 1), padding 0.4s ease; }
+        .faq-item.active .faq-answer { max-height: 200px; padding: 0 20px 20px; }
+        .faq-item.active { border-color: var(--primary-color); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .faq-item.active .faq-question i { transform: rotate(180deg); color: var(--primary-color); }
+
+        /* --- قسم تقديم طلب --- */
+        .contact-wrapper { max-width: 700px; margin: 0 auto; width: 100%; background-color: var(--card-bg); padding: 40px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.15); border: 1px solid rgba(223, 177, 65, 0.15); backdrop-filter: blur(5px); }
+        .form-group { margin-bottom: 25px; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 15px 20px; background-color: var(--input-bg); border: 2px solid transparent; border-radius: 10px; color: var(--text-color); font-size: 16px; transition: var(--transition); border: 1px solid rgba(223, 177, 65, 0.1); }
+        .form-group textarea { height: 150px; resize: none; }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 15px rgba(223, 177, 65, 0.2); }
+
+        /* --- التنبيهات المنبثقة السفلية (Toast) --- */
+        .toast-msg {
+            position: fixed;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: #0b0c10;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-weight: bold;
+            box-shadow: var(--glow-shadow);
+            z-index: 10000;
+            transition: bottom 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            pointer-events: none;
+            text-align: center;
+        }
+        .toast-msg.show { bottom: 30px; }
+        .toast-msg.error {
+            background: linear-gradient(45deg, #ef4444, #b91c1c);
+            color: #ffffff;
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+        }
+
+        /* --- زر العودة للأعلى --- */
+        .back-to-top { position: fixed; bottom: 30px; right: 30px; background: linear-gradient(45deg, var(--primary-color), var(--secondary-color)); color: #0b0c10; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; box-shadow: var(--glow-shadow); opacity: 0; pointer-events: none; transition: var(--transition); z-index: 999; }
+        html[dir="rtl"] .back-to-top { right: auto; left: 30px; }
+        .back-to-top.show { opacity: 1; pointer-events: auto; }
+        .back-to-top:hover { transform: translateY(-5px); color: #fff; }
+
+        /* --- التذييل --- */
+        footer { background-color: var(--footer-bg); padding: 50px 20px 30px; border-top: 1px solid rgba(223, 177, 65, 0.15); position: relative; z-index: 10; transition: background-color 0.4s ease; }
+        .footer-content { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 30px; }
+        .contact-channels { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+        .contact-card { display: flex; align-items: center; gap: 12px; background: var(--card-bg); padding: 12px 25px; border-radius: 50px; text-decoration: none; color: var(--text-color); font-weight: 600; border: 1px solid rgba(223, 177, 65, 0.2); transition: var(--transition); }
+        .contact-card i { font-size: 20px; }
+        .contact-card.whatsapp:hover { background-color: #25d366; color: #fff; border-color: #25d366; transform: translateY(-5px); box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4); }
+        .contact-card.telegram:hover { background-color: #0088cc; color: #fff; border-color: #0088cc; transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0, 136, 204, 0.4); }
+        .contact-card.instagram:hover { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); color: #fff; border-color: #dc2743; transform: translateY(-5px); box-shadow: 0 5px 15px rgba(220, 39, 67, 0.4); }
+        .contact-card.email:hover { background: linear-gradient(45deg, var(--primary-color), var(--secondary-color)); color: #0b0c10; border-color: var(--primary-color); transform: translateY(-5px); box-shadow: var(--glow-shadow); }
+        .copyright { font-size: 14px; color: var(--text-muted); margin-top: 20px; text-align: center; }
+
+        @media (max-width: 768px) {
+            .nav-controls-wrapper { gap: 10px; }
+            .nav-links { position: fixed; top: 75px; right: -100%; background-color: var(--bg-color); width: 100%; height: calc(100vh - 75px); flex-direction: column; align-items: center; padding-top: 50px; gap: 40px; transition: var(--transition); border-top: 1px solid rgba(223, 177, 65, 0.15); }
+            .nav-links.open { right: 0; }
+            .menu-btn { display: block; order: 3; }
+            #about { flex-direction: column-reverse; text-align: center; padding-top: 140px; gap: 40px; min-height: auto; }
+            .about-content h1 { font-size: 32px; }
+            .img-box { width: 240px; height: 240px; }
+            .stats-grid-horizontal { grid-template-columns: 1fr; gap: 15px; }
+            .contact-channels { flex-direction: column; width: 100%; gap: 15px; }
+            .contact-card { justify-content: center; }
+            .pricing-card.popular { transform: scale(1); }
+            .pricing-card.popular:hover { transform: translateY(-10px); }
+            .drawer-header { padding: 20px; }
+            .reviews-modal-grid { padding: 20px; grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="preloader">
+        <div class="loader-wrapper">
+            <div class="loader-logo-container">
+                <img src="logo.jpg" alt="KASIMO Logo" class="loader-logo" loading="eager">
+            </div>
+            <div class="loader-text-brand">KASIMO</div>
+            <div class="loader-bar-bg">
+                <div class="loader-bar-fill" id="loaderBarFill"></div>
+            </div>
+            <div class="loader-progress-num" id="loaderProg">0%</div>
+        </div>
+    </div>
+
+    <canvas id="bg-canvas"></canvas>
+
+    <header>
+        <nav class="nav-container">
+            <div class="logo-area">
+                <img src="logo.jpg" alt="KASIMO Logo" class="logo-img" loading="eager">
+                <div class="logo-text">KASIMO</div>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#about" data-key="nav-about">من أنا</a></li>
+                <li><a href="#features" data-key="nav-features">لماذا تختارني</a></li>
+                <li><a href="#portfolio" data-key="nav-portfolio">أعمالي</a></li>
+                <li><a href="#reviews" data-key="nav-reviews">التقييمات</a></li>
+                <li><a href="#pricing" data-key="nav-pricing">الأسعار</a></li>
+                <li><a href="#faq" data-key="nav-faq">الأسئلة الشائعة</a></li>
+                <li><a href="#contact" data-key="nav-contact">تقديم طلب</a></li>
+            </ul>
+            
+            <div class="nav-controls-wrapper">
+                <button class="lang-toggle-btn" id="langToggleBtn" aria-label="تغيير اللغة">
+                    <i class="fas fa-globe"></i> <span id="langText">EN</span>
+                </button>
+                <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="تغيير المظهر">
+                    <i class="fas fa-moon" id="themeIcon"></i>
+                </button>
+                <div class="menu-btn" id="menuBtn" aria-label="فتح القائمة">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <section id="about">
+        <div class="about-content reveal">
+            <h1 id="aboutTitle">مرحباً بك، أنا مصمم <span id="aboutTitleSpan">هويات بصرية ومطور ويب</span></h1>
+            <p id="aboutDesc">أقوم بمساعدة الشركات والرواد على بناء بصمتهم الفريدة من خلال تصميم هويات بصرية فخمة وشعارات مميزة فريدة من نوعها، وتطوير مواقع ويب سريعة وحديثة تتوافق مع هوياتهم وتجلب لهم العملاء.</p>
+            <button class="btn" id="startProjectBtn" data-key="btn-start">ابدأ مشروعك الآن</button>
+        </div>
+        <div class="about-img reveal">
+            <div class="img-box">
+                <img src="logo.jpg" alt="صورة تعريفية KASIMO" class="main-logo-src" loading="eager">
+            </div>
+        </div>
+    </section>
+
+    <section id="features">
+        <h2 class="section-title reveal" data-key="features-title">لماذا تختارني؟</h2>
+        <div class="features-grid reveal">
+            <div class="feature-card">
+                <i class="fas fa-code"></i>
+                <h3 data-key="f1-title">كود نظيف واحترافي</h3>
+                <p data-key="f1-desc">برمجة احترافية عالية الجودة، منظمة وقابلة للتطوير المستقبلي لتلبية طموحات مشروعك.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-mobile-alt"></i>
+                <h3 data-key="f2-title">متجاوب 100%</h3>
+                <p data-key="f2-desc">تصاميم مرنة وتلقائية تعمل بسلاسة فائقة وعلى جميع أنواع الأجهزة والشاشات الذكية.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-shield-alt"></i>
+                <h3 data-key="f3-title">آمن وموثوق</h3>
+                <p data-key="f3-desc">أنظمة حماية متكاملة وقوية تضمن الحفاظ التام على بياناتك وبيانات زوار موقعك.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-tachometer-alt"></i>
+                <h3 data-key="f4-title">سرعة وأداء عالي</h3>
+                <p data-key="f4-desc">تهيئة شاملة لسرعة تحميل الصفحات لتقديم أفضل تجربة مستخدم ممكنة تضمن بقاء الزوار.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-dollar-sign"></i>
+                <h3 data-key="f5-title">سعر مناسب وقيمة كبيرة</h3>
+                <p data-key="f5-desc">استثمر في موقعك الإلكتروني باحترافية بأسعار تنافسية ومناسبة تبدأ من 10$ فقط.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-headset"></i>
+                <h3 data-key="f6-title">دعم فني متواصل</h3>
+                <p data-key="f6-desc">خدمة عملاء ودعم فني وصيانة دورية على مدار الساعة لضمان استقرار وأداء موقعك 24/7.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="stats-horizontal-section reveal">
+        <div class="stats-grid-horizontal">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-laptop-code"></i></div>
+                <h2 class="counter" data-target="10">0</h2>
+                <p data-key="stat-web">مواقع تم تطويرها</p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-bezier-curve"></i></div>
+                <h2 class="counter" data-target="4">0</h2>
+                <p data-key="stat-identity">هويات بصرية وشعارات</p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-star"></i></div>
+                <h2 class="counter" data-target="98">0</h2>
+                <p data-key="stat-satisfaction">% نسبة رضا العملاء</p>
+            </div>
+        </div>
+    </div>
+
+    <section id="portfolio">
+        <h2 class="section-title reveal" data-key="portfolio-title">معرض أعمالي</h2>
+        
+        <div class="portfolio-filters reveal">
+            <button class="filter-btn active" data-filter="all" data-key="filter-all">الكل</button>
+            <button class="filter-btn" data-filter="web" data-key="filter-web">بعض تصاميم المواقع (4)</button>
+            <button class="filter-btn" data-filter="identity" data-key="filter-identity">بعض الهويات والشعارات (4)</button>
+        </div>
+
+        <div class="portfolio-grid">
+            <div class="portfolio-card reveal" data-category="web" data-title-ar="متجر إلكتروني فخم" data-desc-ar="تطوير متجر بيع منتجات فاخرة بتصميم مستوحى من الألوان الملكية الداكنة مع سلة مشتريات ذكية ونظام دفع متكامل وسريع وجذاب للعملاء." data-title-en="Luxury E-commerce Store" data-desc-en="Development of a luxury product store with a design inspired by royal dark colors, featuring a smart shopping cart and integrated fast payment system.">
+                <div class="card-img"><img src="web-1.png" alt="متجر إلكتروني فاخر" loading="eager"></div>
+                <div class="card-info">
+                    <h3 data-key="p1-title">متجر إلكتروني فاخر</h3>
+                    <p data-key="p1-sub">تصميم وتطوير ويب متجاوب بالكامل</p>
+                </div>
+            </div>
+            
+            <div class="portfolio-card reveal" data-category="web" data-title-ar="موقع عقاري تفاعلي" data-desc-ar="منصة متطورة لعرض العقارات والمشاريع السكنية الفاخرة مزودة بميزة البحث المتقدم والخرائط التفاعلية الذكية لخدمة المستثمرين وعشاق الفخامة." data-title-en="Interactive Real Estate Website" data-desc-en="An advanced platform for displaying luxury real estate and residential projects, equipped with advanced search features and smart interactive maps.">
+                <div class="card-img"><img src="web-2.png" alt="موقع تسويق عقاري" loading="eager"></div>
+                <div class="card-info">
+                    <h3 data-key="p2-title">موقع تسويق عقاري</h3>
+                    <p data-key="p2-sub">تطوير واجهات مستخدم سلسة وعصرية</p>
+                </div>
+            </div>
+            
+            <div class="portfolio-card reveal" data-category="web" data-title-ar="موقع تعريفي للشركات" data-desc-ar="موقع ويب مخصص لعرض خدمات شركة رائدة بتأثيرات حركية خرافية عند التمرير تساعد على زيادة تحويل الزوار إلى مستهلكين للخدمة." data-title-en="Corporate Business Website" data-desc-en="A custom website to showcase the services of a leading company with amazing scroll animations that boost visitor conversion rate.">
+                <div class="card-img"><img src="web-3.png" alt="موقع شركة تعريفي" loading="eager"></div>
+                <div class="card-info">
+                    <h3 data-key="p3-title">موقع شركة تعريفي</h3>
+                    <p data-key="p3-sub">تصميم واجهات الويب والـ UI/UX الـاحترافي</p>
+                </div>
+            </div>
+            
+            <div class="portfolio-card reveal" data-category="web" data-title-ar="منصة تعليمية ذكية" data-desc-ar="نظام إدارة تعلم متقدم يتيح عرض الدورات التدريبية واجتياز الاختبارات والحصول على الشهادات الرقمية بنظام أتمتة كامل وفائق السرعة." data-title-en="Smart Educational Platform" data-desc-en="An advanced learning management system allowing courses display, quizzes passing, and obtaining digital certificates with automated fast system.">
+                <div class="card-img"><img src="web-4.png" alt="منصة تعليمية متكاملة" loading="eager"></div>
+                <div class="card-info">
+                    <h3 data-key="p4-title">منصة تعليمية متكاملة</h3>
+                    <p data-key="p4-sub">تطوير تطبيقات ويب سريعة وآمنة</p>
+                </div>
+            </div>
+
+            <div class="portfolio-card reveal" data-category="identity" data-title-ar="هوية شركة الاستثمار القابضة" data-desc-ar="بناء وتصميم هوية بصرية متكاملة تتضمن الشعار، اختيار لوحة الألوان الرسمية الفخمة، تصميم مطبوعات الشركة، والكرات الشخصية بما يمنح الشركة هيبة استثمارية قوية." data-title-en="Investment Holding Identity" data-desc-en="Building and designing a complete visual identity including logo, luxury color palette, company stationery, and business cards giving it strong prestige.">
+                <div class="card-img"><img src="brand-1.png" alt="هوية شركة استثمارية" loading="eager"></div>
+                <div class="card-info">
+                    <h3 data-key="p5-title">هوية شركة استثمارية</h3>
+                    <p data-key="p5-sub">تصميم شعار وبناء هوية بصرية شاملة</p>
+                </div>
+            </div>
+            
+            <div class="portfolio-card reveal" data-category="identity" data-title-ar="هوية براند قهوة مختصة" data-desc-ar="تصميم الشعار وتغليف المنتجات (Packaging) والأكياس والأكواب الخاصة ببراند كافيه راقي يعكس الدفء والجودة العالية للمنتج والبراند الفاخر." data-title-en="Specialty Coffee Brand Identity" data-desc-en="Logo design, packaging, bags, and cups for a high-end cafe brand reflecting the warmth and high quality of the luxury brand.">
+                <div class="card-img"><img src="brand-2.png" alt="هوية براند قهوة" loading="eager"></div>
+                <div class="card-info">
+                    <h3 data-key="p6-title">هوية براند قهوة</h3>
+                    <p data-key="p6-sub">تصميم هويات تجارية وتغليف منتجات</p>
+                </div>
+            </div>
+            
+            <div class="portfolio-card reveal" data-category="identity" data-title-ar="براند مستحضرات تجميل" data-desc-ar="تصميم هوية بصرية ناعمة وأنيقة لبراند منتجات عناية فاخرة تعبر عن الجمال والنقاء والتميز البصري الجاذب للعملاء بالمتاجر." data-title-en="Cosmetics Brand Identity" data-desc-en="Soft and elegant visual identity design for a luxury skincare brand expressing beauty, purity, and eye-catching visual excellence.">
+                <div class="card-img"><img src="brand-3.png" alt="هوية منتجات تجميل" loading="eager"></div>
+                <div class="card-info">
+                    <h3 data-key="p7-title">هوية منتجات تجميل</h3>
+                    <p data-key="p7-sub">تطوير الشعار والنمط البصري الفخم</p>
+                </div>
+            </div>
+            
+            <div class="portfolio-card reveal" data-category="identity" data-title-ar="هوية تطبيق تكنولوجي" data-desc-ar="بناء الشعار والدليل البصري (Brand Guidelines) بالكامل لتطبيق هاتف ذكي يعتمد على البساطة الحداثية والرموز والخطوط المستقبلية المتناسقة." data-title-en="Tech App Identity" data-desc-en="Building logo and complete brand guidelines for a smartphone app based on modern simplicity, symbols, and coherent futuristic fonts.">
+                <div class="card-img"><img src="brand-4.jpg" alt="هوية براند رقمي" loading="eager"></div>
+                <div class="card-info">
+                    <h3 data-key="p8-title">هوية براند رقمي وتطبيق</h3>
+                    <p data-key="p8-sub">تصميم الشعارات العصرية والأدلة البصرية</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal" id="portfolioModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">×</span>
+            <div class="modal-icon" id="modalIcon"><i class="fas fa-layer-group"></i></div>
+            <h3 class="modal-title" id="modalTitle">اسم المشروع</h3>
+            <p class="modal-text" id="modalText">تفاصيل المشروع هنا...</p>
+            <button class="btn" id="modalBtn" data-key="modal-btn-order">اطلب تصميم مشابه</button>
+            <br>
+            <a href="https://linktr.ee/kasimoportfolio" target="_blank" class="btn btn-outline" id="linktreeBtn" data-key="modal-btn-all">لرؤية كل الأعمال وللمزيد من التفاصيل</a>
+        </div>
+    </div>
+
+    <section id="reviews">
+        <h2 class="section-title reveal" data-key="reviews-title">آراء العملاء</h2>
+        
+        <div class="reviews-container" id="reviewsContainer"></div>
+
+        <div class="more-reviews-btn-wrapper reveal" id="moreReviewsWrapper" style="display: none;">
+            <a class="more-reviews-link" id="openReviewsModal" data-key="btn-more-reviews">المزيد</a>
+        </div>
+
+        <div class="add-review-wrapper reveal">
+            <h3 data-key="add-rev-title">اترك رأيك وتجربتك معنا</h3>
+            <form id="addReviewForm">
+                <div class="rating-select" id="ratingSelect">
+                    <i class="fas fa-star" data-value="1"></i>
+                    <i class="fas fa-star" data-value="2"></i>
+                    <i class="fas fa-star" data-value="3"></i>
+                    <i class="fas fa-star" data-value="4"></i>
+                    <i class="fas fa-star" data-value="5"></i>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="clientName" placeholder="اسمك" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="clientJob" placeholder="وظيفتك أو اسم شركتك (مثال: صاحب مقهى)" required>
+                </div>
+                <div class="form-group">
+                    <textarea id="clientComment" placeholder="اكتب رأيك في خدماتنا..." required></textarea>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;" data-key="btn-publish">انشر التقييم</button>
+            </form>
+        </div>
+    </section>
+
+    <div class="drawer-overlay" id="drawerOverlay"></div>
+
+    <div class="reviews-drawer" id="reviewsDrawer">
+        <div class="drawer-header">
+            <h3 data-key="all-reviews-title"><i class="fas fa-comments"></i> كل تقييمات العملاء</h3>
+            <span class="close-drawer" id="closeReviewsDrawer">×</span>
+        </div>
+        <div class="reviews-modal-grid" id="modalReviewsContainer"></div>
+    </div>
+
+    <section id="pricing">
+        <h2 class="section-title reveal" data-key="pricing-title">باقات الأسعار</h2>
+        <div class="pricing-container reveal">
+            <div class="pricing-card">
+                <h3 data-key="price1-title">تصميم الهوية والشعار</h3>
+                <div class="price">
+                    <span data-key="price-start">ابتداءاً من</span>
+                    <h4>$7</h4>
+                </div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check"></i> <span data-key="pf1-1">تصميم شعار احترافي</span></li>
+                    <li><i class="fas fa-check"></i> <span data-key="pf1-2">لوحة ألوان متناسقة</span></li>
+                    <li><i class="fas fa-check"></i> <span data-key="pf1-3">ملفات مفتوحة المصدر</span></li>
+                </ul>
+                <a href="#contact" class="btn" data-key="btn-order-now">اطلب الآن</a>
+            </div>
+            
+            <div class="pricing-card">
+                <h3 data-key="price2-title">تطوير موقع إلكتروني</h3>
+                <div class="price">
+                    <span data-key="price-start">ابتداءاً من</span>
+                    <h4>$10</h4>
+                </div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check"></i> <span data-key="pf2-1">تصميم متجاوب وسريع</span></li>
+                    <li><i class="fas fa-check"></i> <span data-key="pf2-2">واجهة مستخدم عصرية</span></li>
+                    <li><i class="fas fa-check"></i> <span data-key="pf2-3">دعم فني وصيانة</span></li>
+                </ul>
+                <a href="#contact" class="btn" data-key="btn-order-now">اطلب الآن</a>
+            </div>
+            
+            <div class="pricing-card popular">
+                <div class="badge" data-key="price-badge">خصم 50%</div>
+                <h3 data-key="price3-title">الباقة الشاملة (هوية + موقع)</h3>
+                <div class="price">
+                    <span data-key="price-start">ابتداءاً من</span>
+                    <h4>$20</h4>
+                    <span class="old-price">$40</span>
+                </div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check"></i> <span data-key="pf3-1">هوية بصرية وشعار متكامل</span></li>
+                    <li><i class="fas fa-check"></i> <span data-key="pf3-2">موقع إلكتروني فخم وسريع</span></li>
+                    <li><i class="fas fa-check"></i> <span data-key="pf3-3">أولوية في التسليم والدعم</span></li>
+                </ul>
+                <a href="#contact" class="btn" data-key="btn-order-now">اطلب الآن</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq">
+        <h2 class="section-title reveal" data-key="faq-title">الأسئلة الشائعة</h2>
+        <div class="faq-container reveal">
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span data-key="q1">ما هي المدة المستغرقة لتصميم الهوية البصرية أو الموقع؟</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p data-key="a1">تختلف المدة حسب حجم المشروع، ولكن غالباً يستغرق تصميم الهوية البصرية من 3 إلى 5 أيام، بينما يستغرق الموقع الإلكتروني من 3 إلى 7 ايام عمل شامل الاختبار النهائي.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span data-key="q2">هل أحصل على ملفات الهوية والشعار مفتوحة المصدر وبأعلى دقة؟</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p data-key="a2">نعم بكل تأكيد! يتم تسليم العميل كافة الملفات المصدرية بجودة عالية جداً وبصيغ متعددة جاهزة للطباعة والاستخدام الرقمي مثل (AI, PDF, PNG, SVG).</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span data-key="q3">هل تقدمون دعماً فنياً وصيانة للمواقع بعد تسليمها؟</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p data-key="a3">نعم، نوفر دعماً فنياً مجانياً كاملاً ومتابعة للموقع لمدة شهر كامل بعد التسليم لضمان عمل كافة الخصائص البرمجية والأمان بشكل مثالي وبدون أي مشاكل تقنية.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2 class="section-title reveal" data-key="contact-title">تقديم طلب جديد</h2>
+        <div class="contact-wrapper reveal">
+            <form action="https://formspree.io/f/xjgzdpgr" method="POST" id="orderForm">
+                <div class="form-group">
+                    <input type="text" name="الاسم الكامل" id="formName" placeholder="الاسم الكامل" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" name="البريد الإلكتروني" id="formEmail" placeholder="البريد الإلكتروني" required>
+                </div>
+                <div class="form-group">
+                    <input type="tel" name="رقم الواتساب" id="formPhone" placeholder="رقم الواتساب (مع رمز الدولة مثال: +213...)" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="الدولة" id="countryInput" placeholder="أدخل دولتك (مثال: الجزائر)" required>
+                </div>
+                <div class="form-group">
+                    <select name="نوع الخدمة المطلوبة" id="formService" required>
+                        <option value="" disabled selected data-key="opt-default">اختر الخدمة المطلوبة...</option>
+                        <option value="تصميم وتطوير موقع ويب" data-key="opt-web">تصميم وتطوير موقع ويب</option>
+                        <option value="بناء هوية بصرية وشعار" data-key="opt-identity">بناء هوية بصرية وشعار</option>
+                        <option value="المشروعين معاً" data-key="opt-both">المشروعين معاً (موقع + هوية)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <textarea name="تفاصيل المشروع" id="formDesc" placeholder="تفاصيل مشروعك ورؤيتك الاولية للعمل..." required></textarea>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;" data-key="btn-submit">إرسال الطلب عبر الإيميل</button>
+            </form>
+        </div>
+    </section>
+
+    <div id="toastMessage" class="toast-msg"></div>
+
+    <div class="back-to-top" id="backToTop"><i class="fas fa-arrow-up"></i></div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="contact-channels">
+                <a href="https://wtsi.me/213562880460" target="_blank" class="contact-card whatsapp">
+                    <i class="fab fa-whatsapp"></i><span data-key="footer-wa">واتساب</span>
+                </a>
+                <a href="https://t.me/KASIMOSUPPORT" target="_blank" class="contact-card telegram">
+                    <i class="fab fa-telegram-plane"></i><span data-key="footer-tg">الدعم الفني</span>
+                </a>
+                <a href="https://instagram.com/tem_belkacem" target="_blank" class="contact-card instagram">
+                    <i class="fab fa-instagram"></i><span data-key="footer-ig">إنستغرام</span>
+                </a>
+                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=contact.temimebelkacem@gmail.com" target="_blank" class="contact-card email">
+                    <i class="far fa-envelope"></i><span data-key="footer-mail">البريد الإلكتروني</span>
+                </a>
+            </div>
+            <div class="copyright">
+                <p id="copyrightText">جميع الحقوق محفوظة © 2026 | مصمم من طرف : تميم بلقاسم</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            databaseURL: "https://kasimo-website-default-rtdb.firebaseio.com/"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // منطق العداد الخطي لشاشة التحميل الاحترافية
+        window.addEventListener('DOMContentLoaded', () => {
+            const progressNum = document.getElementById('loaderProg');
+            const barFill = document.getElementById('loaderBarFill');
+            const preloader = document.getElementById('preloader');
+            
+            let count = 0;
+            const interval = setInterval(() => {
+                count += Math.floor(Math.random() * 5) + 1;
+                if (count >= 100) {
+                    count = 100;
+                    clearInterval(interval);
+                    barFill.style.width = '100%';
+                    progressNum.innerText = '100%';
+                    
+                    setTimeout(() => {
+                        preloader.style.opacity = '0';
+                        preloader.style.transform = 'scale(1.03)';
+                        setTimeout(() => { preloader.style.display = 'none'; }, 600);
+                    }, 350);
+                } else {
+                    progressNum.innerText = count + '%';
+                    barFill.style.width = count + '%';
+                }
+            }, 35);
+        });
+
+        let allReviewsList = [];
+        let currentLang = 'ar';
+        
+        const langData = {
+            ar: {
+                'nav-about': 'من أنا', 'nav-features': 'لماذا تختارني', 'nav-portfolio': 'أعمالي', 'nav-reviews': 'التقييمات', 'nav-pricing': 'الأسعار', 'nav-faq': 'الأسئلة الشائعة', 'nav-contact': 'تقديم طلب',
+                'aboutTitle': 'مرحباً بك، أنا مصمم <span>هويات بصرية ومطور ويب</span>',
+                'aboutDesc': 'أقوم بمساعدة الشركات والرواد على بناء بصمتهم الفريدة من خلال تصميم هويات بصرية فخمة وشعارات مميزة فريدة من نوعها، وتطوير مواقع ويب سريعة وحديثة تتوافق مع هوياتهم وتجلب لهم العملاء.',
+                'btn-start': 'ابدأ مشروعك الآن', 
+                'features-title': 'لماذا تختارني؟',
+                'f1-title': 'كود نظيف واحترافي', 'f1-desc': 'برمجة احترافية عالية الجودة، منظمة وقابلة للتطوير المستقبلي لتلبية طموحات مشروعك.',
+                'f2-title': 'متجاوب 100%', 'f2-desc': 'تصاميم مرنة وتلقائية تعمل بسلاسة فائقة وعلى جميع أنواع الأجهزة والشاشات الذكية.',
+                'f3-title': 'آمن وموثوق', 'f3-desc': 'أنظمة حماية متكاملة وقوية تضمن الحفاظ التام على بياناتك وبيانات زوار موقعك.',
+                'f4-title': 'سرعة وأداء عالي', 'f4-desc': 'تهيئة شاملة لسرعة تحميل الصفحات لتقديم أفضل تجربة مستخدم ممكنة تضمن بقاء الزوار.',
+                'f5-title': 'سعر مناسب وقيمة كبيرة', 'f5-desc': 'استثمر في موقعك الإلكتروني باحترافية بأسعار تنافسية ومناسبة تبدأ من 10$ فقط.',
+                'f6-title': 'دعم فني متواصل', 'f6-desc': 'خدمة عملاء ودعم فني وصيانة دورية على مدار الساعة لضمان استقرار وأداء موقعك 24/7.',
+                'stat-web': 'مواقع تم تطويرها', 'stat-identity': 'هويات بصرية وشعارات', 'stat-satisfaction': '% نسبة رضا العملاء',
+                'portfolio-title': 'معرض أعمالي', 'filter-all': 'الكل', 'filter-web': 'بعض تصاميم المواقع (4)', 'filter-identity': 'بعض الهويات والشعارات (4)',
+                'p1-title': 'متجر إلكتروني فاخر', 'p1-sub': 'تصميم وتطوير ويب متجاوب بالكامل',
+                'p2-title': 'موقع تسويق عقاري', 'p2-sub': 'تطوير واجهات مستخدم سلسة وعصرية',
+                'p3-title': 'موقع شركة تعريفي', 'p3-sub': 'تصميم واجهات الويب والـ UI/UX الاحترافي',
+                'p4-title': 'منصة تعليمية متكاملة', 'p4-sub': 'تطوير تطبيقات ويب سريعة وآمنة',
+                'p5-title': 'هوية شركة استثمارية', 'p5-sub': 'تصميم شعار وبناء هوية بصرية شاملة',
+                'p6-title': 'هوية براند قهوة', 'p6-sub': 'تصميم هويات تجارية وتغليف منتجات',
+                'p7-title': 'هوية منتجات تجميل', 'p7-sub': 'تطوير الشعار والنمط البصري الفخم',
+                'p8-title': 'هوية براند رقمي وتطبيق', 'p8-sub': 'تصميم الشعارات العصرية والأدلة البصرية',
+                'modal-btn-order': 'اطلب تصميم مشابه', 'modal-btn-all': 'لرؤية كل الأعمال وللمزيد من التفاصيل', 'reviews-title': 'آراء العملاء',
+                'add-rev-title': 'اترك رأيك وتجربتك معنا', 'placeholder-name': 'اسمك', 'placeholder-job': 'وظيفتك أو اسم شركتك (مثال: صاحب مقهى)', 'placeholder-comment': 'اكتب رأيك في خدماتنا...', 'btn-publish': 'انشر التقييم',
+                'pricing-title': 'باقات الأسعار', 'price1-title': 'تصميم الهوية والشعار', 'price2-title': 'تطوير موقع إلكتروني', 'price3-title': 'الباقة الشاملة (هوية + موقع)',
+                'price-start': 'ابتداءاً من', 'price-badge': 'خصم 50%',
+                'pf1-1': 'تصميم شعار احترافي', 'pf1-2': 'لوحة ألوان متناسقة', 'pf1-3': 'ملفات مفتوحة المصدر',
+                'pf2-1': 'تصميم متجاوب وسريع', 'pf2-2': 'واجهة مستخدم عصرية', 'pf2-3': 'دعم فني وصيانة',
+                'pf3-1': 'هوية بصرية وشعار متكامل', 'pf3-2': 'موقع إلكتروني فخم وسريع', 'pf3-3': 'أولوية في التسليم والدعم', 'btn-order-now': 'اطلب الآن',
+                'faq-title': 'الأسئلة الشائعة',
+                'q1': 'ما هي المدة المستغرقة لتصميم الهوية البصرية أو الموقع؟', 'a1': 'تختلف المدة حسب حجم المشروع، ولكن غالباً يستغرق تصميم الهوية البصرية من 3 إلى 5 أيام، بينما يستغرق الموقع الإلكتروني من 3 إلى 7 ايام عمل شامل الاختبار النهائي.',
+                'q2': 'هل أحصل على ملفات الهوية والشعار مفتوحة المصدر وبأعلى دقة؟', 'a2': 'نعم بكل تأكيد! يتم تسليم العميل كافة الملفات المصدرية بجودة عالية جداً وبصيغ متعددة جاهزة للطباعة والاستخدام الرقمي مثل (AI, PDF, PNG, SVG).',
+                'q3': 'هل تقدمون دعماً فنياً وصيانة للمواقع بعد تسليمها؟', 'a3': 'نعم، نوفر دعماً فنياً مجانياً كاملاً ومتابعة للموقع لمدة شهر كامل بعد التسليم لضمان عمل كافة الخصائص البرمجية والأمان بشكل مثالي وبدون أي مشاكل تقنية.',
+                'contact-title': 'تقديم طلب جديد', 'placeholder-fname': 'الاسم الكامل', 'placeholder-femail': 'البريد الإلكتروني', 'placeholder-fphone': 'رقم الواتساب (مع رمز الدولة مثال: +213...)', 'placeholder-country': 'أدخل دولتك (مثال: الجزائر)',
+                'opt-default': 'اختر الخدمة المطلوبة...', 'opt-web': 'تصميم وتطوير موقع ويب', 'opt-identity': 'بناء هوية بصرية وشعار', 'opt-both': 'المشروعين معاً (موقع + هوية)', 'placeholder-fdesc': 'تفاصيل مشروعك ورؤيتك الاولية للعمل...', 'btn-submit': 'إرسال الطلب عبر الإيميل',
+                'footer-wa': 'واتساب', 'footer-tg': 'الدعم الفني', 'footer-ig': 'إنستغرام', 'footer-mail': 'البريد الإلكتروني', 'copyright': 'جميع الحقوق محفوظة © 2026 | مصمم من طرف : تميم بلقاسم',
+                'msg-review-success': 'شكراً على تقييمك! رأيك يهمنا جداً وسوف ينشر فوراً.', 'msg-order-success': 'يتم الآن معالجة طلبك وإرسال كافة التفاصيل بنجاح!',
+                'msg-review-error': 'عذراً، حدث خطأ أثناء إرسال التعليق! حاول مجدداً.',
+                'btn-more-reviews': 'المزيد', 'all-reviews-title': 'كل تقييمات العملاء'
+            },
+            en: {
+                'nav-about': 'About Me', 'nav-features': 'Why Choose Me', 'nav-portfolio': 'Portfolio', 'nav-reviews': 'Reviews', 'nav-pricing': 'Pricing', 'nav-faq': 'FAQ', 'nav-contact': 'Order Now',
+                'aboutTitle': 'Welcome, I am a <span id="aboutTitleSpan">Visual Identity Designer & Web Developer</span>',
+                'aboutDesc': 'I help businesses and entrepreneurs build their unique footprint by designing luxurious visual identities, distinctive logos, and developing fast, modern websites that match their brand and attract clients.',
+                'btn-start': 'Start Your Project Now',
+                'features-title': 'Why Choose Me?',
+                'f1-title': 'Clean & Pro Code', 'f1-desc': 'High-quality professional programming, highly organized and scalable for future project growth.',
+                'f2-title': '100% Responsive', 'f2-desc': 'Flexible and fluid designs that display flawlessly across all types of devices and smart screens.',
+                'f3-title': 'Safe & Secure', 'f3-desc': 'Robust integrated security systems ensuring full protection for your data and your visitors info.',
+                'f4-title': 'High Speed & Performance', 'f4-desc': 'Full page-speed optimization to deliver the best user experience and keep bounce rates low.',
+                'f5-title': 'Fair Pricing & High Value', 'f5-desc': 'Invest in a fully professional website with competitive pricing starting from just 10$.',
+                'f6-title': 'Continuous Support', 'f6-desc': 'Dedicated customer service, technical maintenance, and regular checkups around the clock 24/7.',
+                'stat-web': 'Websites Developed', 'stat-identity': 'Identities & Logos', 'stat-satisfaction': 'Client Satisfaction Rate %',
+                'portfolio-title': 'My Portfolio', 'filter-all': 'All', 'filter-web': 'Web Designs (4)', 'filter-identity': 'Identities & Logos (4)',
+                'p1-title': 'Luxury E-commerce Store', 'p1-sub': 'Fully responsive web design and development',
+                'p2-title': 'Real Estate Website', 'p2-sub': 'Developing smooth and modern user interfaces',
+                'p3-title': 'Corporate Showcase Website', 'p3-sub': 'Professional UI/UX and web interface design',
+                'p4-title': 'Integrated Educational Platform', 'p4-sub': 'Developing fast and secure web applications',
+                'p5-title': 'Investment Company Identity', 'p5-sub': 'Logo design and comprehensive visual branding',
+                'p6-title': 'Coffee Brand Identity', 'p6-sub': 'Commercial identity design and product packaging',
+                'p7-title': 'Cosmetics Brand Identity', 'p7-sub': 'Developing logos and luxurious visual patterns',
+                'p8-title': 'Digital Brand & App Identity', 'p8-sub': 'Modern logo design and brand guidelines',
+                'modal-btn-order': 'Request a Similar Design', 'modal-btn-all': 'To see all works and for more details', 'reviews-title': 'Client Reviews',
+                'add-rev-title': 'Leave Your Feedback With Us', 'placeholder-name': 'Your Name', 'placeholder-job': 'Your Job or Company (e.g., Cafe Owner)', 'placeholder-comment': 'Write your review here...', 'btn-publish': 'Publish Review',
+                'pricing-title': 'Pricing Packages', 'price1-title': 'Identity & Logo Design', 'price2-title': 'Website Development', 'price3-title': 'Combo Package (Identity + Web)',
+                'price-start': 'Starting from', 'price-badge': '50% OFF',
+                'pf1-1': 'Professional Logo Design', 'pf1-2': 'Cohesive Color Palette', 'pf1-3': 'Open Source Files',
+                'pf2-1': 'Fast Responsive Design', 'pf2-2': 'Modern User Interface', 'pf2-3': 'Tech Support & Maintenance',
+                'pf3-1': 'Complete Identity & Logo', 'pf3-2': 'Luxury & Fast Website', 'pf3-3': 'Priority Delivery & Support', 'btn-order-now': 'Order Now',
+                'faq-title': 'Frequently Asked Questions',
+                'q1': 'How long does it take to design an identity or website?', 'a1': 'Duration varies by project size, but visual identity usually takes 3-5 days, while websites take 3-7 business days including final testing.',
+                'q2': 'Do I get open-source, high-resolution identity and logo files?', 'a2': 'Yes, absolutely! The client receives all source files in high quality and multiple formats ready for print and digital use (AI, PDF, PNG, SVG).',
+                'q3': 'Do you provide technical support and maintenance after delivery?', 'a3': 'Yes, we provide one full month of free technical support and monitoring after delivery to ensure all code features and security work perfectly.',
+                'contact-title': 'Submit a New Request', 'placeholder-fname': 'Full Name', 'placeholder-femail': 'Email Address', 'placeholder-fphone': 'WhatsApp Number (with country code, e.g., +213...)', 'placeholder-country': 'Enter your country (e.g., Algeria)',
+                'opt-default': 'Choose required service...', 'opt-web': 'Web Design & Development', 'opt-identity': 'Visual Identity & Logo', 'opt-both': 'Both Projects Together (Web + Identity)', 'placeholder-fdesc': 'Project details and your initial vision...', 'btn-submit': 'Send Request via Email',
+                'footer-wa': 'WhatsApp', 'footer-tg': 'Technical Support', 'footer-ig': 'Instagram', 'footer-mail': 'Email', 'copyright': 'All Rights Reserved © 2026 | Designed by: Temime Belkacem',
+                'msg-review-success': 'Thank you for your review! Your opinion matters a lot to us.', 'msg-order-success': 'Your request is being processed successfully!',
+                'msg-review-error': 'Sorry, an error occurred while sending the review! Try again.',
+                'btn-more-reviews': 'More', 'all-reviews-title': 'All Client Reviews'
+            }
+        };
+
+        const langToggleBtn = document.getElementById('langToggleBtn');
+        const langText = document.getElementById('langText');
+        let hasReviewsData = false;
+
+        langToggleBtn.addEventListener('click', () => {
+            currentLang = currentLang === 'ar' ? 'en' : 'ar';
+            langText.innerText = currentLang === 'ar' ? 'EN' : 'AR';
+            
+            document.documentElement.lang = currentLang;
+            document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+            
+            document.querySelectorAll('[data-key]').forEach(elem => {
+                const key = elem.getAttribute('data-key');
+                if (langData[currentLang][key]) {
+                    elem.innerHTML = langData[currentLang][key];
+                }
+            });
+
+            document.getElementById('aboutTitle').innerHTML = langData[currentLang]['aboutTitle'];
+            document.getElementById('aboutDesc').innerText = langData[currentLang]['aboutDesc'];
+            document.getElementById('copyrightText').innerText = langData[currentLang]['copyright'];
+            
+            document.getElementById('clientName').placeholder = langData[currentLang]['placeholder-name'];
+            document.getElementById('clientJob').placeholder = langData[currentLang]['placeholder-job'];
+            document.getElementById('clientComment').placeholder = langData[currentLang]['placeholder-comment'];
+            document.getElementById('formName').placeholder = langData[currentLang]['placeholder-fname'];
+            document.getElementById('formEmail').placeholder = langData[currentLang]['placeholder-femail'];
+            document.getElementById('formPhone').placeholder = langData[currentLang]['placeholder-fphone'];
+            document.getElementById('countryInput').placeholder = langData[currentLang]['placeholder-country'];
+            document.getElementById('formDesc').placeholder = langData[currentLang]['placeholder-fdesc'];
+
+            if (!hasReviewsData) {
+                reviewsContainer.innerHTML = '';
+                allReviewsList = [];
+                createDefaultReview();
+            } else {
+                renderReviews();
+            }
+        });
+
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const themeIcon = document.getElementById('themeIcon');
+
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            if (currentTheme === 'light') {
+                document.documentElement.removeAttribute('data-theme');
+                themeIcon.className = 'fas fa-moon';
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+                themeIcon.className = 'fas fa-sun';
+            }
+            renderReviews();
+        });
+
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let particlesArray = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2.5 + 0.5;
+                this.speedX = Math.random() * 0.4 - 0.2;
+                this.speedY = Math.random() * -0.6 - 0.2;
+                this.opacity = Math.random() * 0.6 + 0.2;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.y < 0) {
+                    this.y = canvas.height;
+                    this.x = Math.random() * canvas.width;
+                }
+                if (this.x > canvas.width || this.x < 0) this.speedX *= -1;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(223, 177, 65, ${this.opacity})`;
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = '#dfb141';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            }
+        }
+
+        function initParticles() {
+            particlesArray = [];
+            const numberOfParticles = Math.min(80, Math.floor(window.innerWidth / 15));
+            for (let i = 0; i < numberOfParticles; i++) {
+                particlesArray.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            if (window.scrollY < window.innerHeight * 1.5) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for (let i = 0; i < particlesArray.length; i++) {
+                    particlesArray[i].update();
+                    particlesArray[i].draw();
+                }
+            }
+            requestAnimationFrame(animateParticles);
+        }
+        initParticles();
+        animateParticles();
+
+        const menuBtn = document.getElementById('menuBtn');
+        const navLinks = document.getElementById('navLinks');
+        menuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+            menuBtn.querySelector('i').classList.toggle('fa-bars');
+            menuBtn.querySelector('i').classList.toggle('fa-times');
+        });
+
+        const startProjectBtn = document.getElementById('startProjectBtn');
+        const modalBtn = document.getElementById('modalBtn');
+        const contactSection = document.getElementById('contact');
+
+        function scrollToContact() { contactSection.scrollIntoView({ behavior: 'smooth' }); }
+        if(startProjectBtn) startProjectBtn.addEventListener('click', scrollToContact);
+        if(modalBtn) modalBtn.addEventListener('click', () => {
+            document.getElementById('portfolioModal').classList.remove('open');
+            scrollToContact();
+        });
+
+        const reveals = document.querySelectorAll('.reveal');
+        const backToTop = document.getElementById('backToTop');
+        const counters = document.querySelectorAll('.counter');
+        let countStarted = false;
+
+        function startCounters() {
+            counters.forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                const updateCount = () => {
+                    const current = +counter.innerText;
+                    const increment = target / 30;
+                    if (current < target) { counter.innerText = Math.ceil(current + increment); setTimeout(updateCount, 40); }
+                    else { counter.innerText = target; }
+                };
+                updateCount();
+            });
+        }
+
+        function checkReveal() {
+            for (let i = 0; i < reveals.length; i++) {
+                let windowHeight = window.innerHeight;
+                let elementTop = reveals[i].getBoundingClientRect().top;
+                if (elementTop < windowHeight - 50) reveals[i].classList.add('active');
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', checkReveal);
+        window.addEventListener('scroll', () => {
+            checkReveal();
+            if (window.scrollY > 400) backToTop.classList.add('show');
+            else backToTop.classList.remove('show');
+
+            const statsSection = document.querySelector('.stats-grid-horizontal');
+            if(statsSection) {
+                let position = statsSection.getBoundingClientRect().top;
+                if(position < window.innerHeight && !countStarted) { startCounters(); countStarted = true; }
+            }
+        });
+
+        backToTop.addEventListener('click', () => window.scrollTo({top: 0, behavior: 'smooth'}));
+
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const portfolioCards = document.querySelectorAll('.portfolio-card');
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const filterValue = btn.getAttribute('data-filter');
+                portfolioCards.forEach(card => {
+                    if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) card.classList.remove('hide');
+                    else card.classList.add('hide');
+                });
+            });
+        });
+
+        const modal = document.getElementById('portfolioModal');
+        const closeModal = document.getElementById('closeModal');
+        portfolioCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const titleAttr = currentLang === 'ar' ? 'data-title-ar' : 'data-title-en';
+                const descAttr = currentLang === 'ar' ? 'data-desc-ar' : 'data-desc-en';
+                document.getElementById('modalTitle').innerText = card.getAttribute(titleAttr);
+                document.getElementById('modalText').innerText = card.getAttribute(descAttr);
+                modal.classList.add('open');
+            });
+        });
+        closeModal.addEventListener('click', () => modal.classList.remove('open'));
+
+        const stars = document.querySelectorAll('#ratingSelect i');
+        let selectedRating = 5;
+        stars.forEach(star => {
+            star.classList.add('active');
+            star.addEventListener('click', () => {
+                selectedRating = parseInt(star.getAttribute('data-value'));
+                stars.forEach(s => {
+                    if(parseInt(s.getAttribute('data-value')) <= selectedRating) s.classList.add('active');
+                    else s.classList.remove('active');
+                });
+            });
+        });
+
+        const reviewsContainer = document.getElementById('reviewsContainer');
+        const modalReviewsContainer = document.getElementById('modalReviewsContainer');
+        const moreReviewsWrapper = document.getElementById('moreReviewsWrapper');
+        const addReviewForm = document.getElementById('addReviewForm');
+        
+        const reviewsDrawer = document.getElementById('reviewsDrawer');
+        const drawerOverlay = document.getElementById('drawerOverlay');
+        const openReviewsModalBtn = document.getElementById('openReviewsModal');
+        const closeReviewsDrawerBtn = document.getElementById('closeReviewsDrawer');
+
+        function createReviewHTML(name, job, comment, rating) {
+            let starsHTML = '';
+            for(let i=1; i<=5; i++) { starsHTML += i <= rating ? '<i class="fas fa-star"></i>' : '<i class="far fa-star"></i>'; }
+            return `
+                <div class="client-info">
+                    <div class="client-avatar"><i class="fas fa-user"></i></div>
+                    <div class="client-details"><h4>${name}</h4><span>${job}</span></div>
+                </div>
+                <div class="stars">${starsHTML}</div><p class="review-text">${comment}</p>
+            `;
+        }
+
+        function renderReviews() {
+            reviewsContainer.innerHTML = ''; modalReviewsContainer.innerHTML = '';
+            const mainReviews = allReviewsList.slice(0, 3);
+            mainReviews.forEach(rev => {
+                const card = document.createElement('div'); card.className = 'review-card';
+                card.innerHTML = createReviewHTML(rev.name, rev.job, rev.comment, rev.rating);
+                reviewsContainer.appendChild(card);
+            });
+            allReviewsList.forEach(rev => {
+                const card = document.createElement('div'); card.className = 'review-card';
+                card.innerHTML = createReviewHTML(rev.name, rev.job, rev.comment, rev.rating);
+                modalReviewsContainer.appendChild(card);
+            });
+            if (allReviewsList.length > 3) moreReviewsWrapper.style.display = 'block';
+            else moreReviewsWrapper.style.display = 'none';
+        }
+
+        function createDefaultReview() {
+            allReviewsList.push({
+                name: currentLang === 'ar' ? "أحمد السعيد" : "Ahmed Al-Saeed",
+                job: currentLang === 'ar' ? "مدير شركة تقنية" : "Tech Company Manager",
+                comment: currentLang === 'ar' ? "لقد صمم لي هوية بصرية فخمة جداً ثم قام بتحويلها لموقع ويب سريع وخرافي." : "He designed a very luxurious visual identity for me, then turned it into a fast website.",
+                rating: 5
+            });
+            renderReviews();
+        }
+
+        database.ref('reviews').on('value', (snapshot) => {
+            allReviewsList = [];
+            if (snapshot.exists()) {
+                hasReviewsData = true;
+                snapshot.forEach((childSnapshot) => { allReviewsList.push(childSnapshot.val()); });
+                renderReviews();
+            } else { hasReviewsData = false; createDefaultReview(); }
+        });
+
+        function openDrawer() {
+            reviewsDrawer.classList.add('open');
+            drawerOverlay.classList.add('open');
+            document.body.style.overflow = 'hidden'; 
+        }
+        function closeDrawer() {
+            reviewsDrawer.classList.remove('open');
+            drawerOverlay.classList.remove('open');
+            document.body.style.overflow = 'auto';
+        }
+
+        openReviewsModalBtn.addEventListener('click', openDrawer);
+        closeReviewsDrawerBtn.addEventListener('click', closeDrawer);
+        drawerOverlay.addEventListener('click', closeDrawer);
+
+        document.querySelectorAll('.faq-question').forEach(q => {
+            q.addEventListener('click', () => q.parentElement.classList.toggle('active'));
+        });
+
+        function showToast(msg, isError = false) {
+            const toast = document.getElementById('toastMessage');
+            toast.innerText = msg;
+            if (isError) { toast.classList.add('error'); } else { toast.classList.remove('error'); }
+            toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 3500);
+        }
+
+        addReviewForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('clientName').value;
+            const job = document.getElementById('clientJob').value;
+            const comment = document.getElementById('clientComment').value;
+
+            database.ref('reviews').push({ 
+                name: name, 
+                job: job, 
+                comment: comment, 
+                rating: selectedRating 
+            }).then(() => {
+                showToast(langData[currentLang]['msg-review-success'], false); 
+                addReviewForm.reset(); 
+                stars.forEach(s => s.classList.add('active')); 
+                selectedRating = 5;
+            }).catch((error) => {
+                console.error(error);
+                showToast(langData[currentLang]['msg-review-error'], true);
+            });
+        });
+
+        const orderForm = document.getElementById('orderForm');
+        orderForm.addEventListener('submit', function(e) {
+            showToast(langData[currentLang]['msg-order-success'], false);
+        });
+    </script>
+</body>
+</html>
